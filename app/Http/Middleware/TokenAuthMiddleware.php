@@ -3,6 +3,7 @@ namespace BookStack\Http\Middleware;
 
 use BookStack\Users\Models\User;
 use Closure;
+use Illuminate\Support\Facades\Log;
 
 class TokenAuthMiddleware
 {
@@ -44,11 +45,11 @@ class TokenAuthMiddleware
                 throw new \Exception('User not found.');
             }
 
-
             // Авторизовать пользователя
             auth()->login($user);
 
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return redirect('/login')->with('error', 'Invalid or expired token.');
         }
 
